@@ -1,0 +1,16 @@
+[Unit]
+Description=redsocks transparent proxy redirector
+Requires=mnt-boot.mount resin-proxy-config.service
+After=mnt-boot.mount resin-proxy-config.service
+
+[Service]
+ExecStart=@BASE_BINDIR@/sh -c "source /usr/sbin/resin-vars && \
+	if [ -f $${CONFIG_PATH%/*}/system-proxy/redsocks.conf ]; then @BINDIR@/redsocks -c $${CONFIG_PATH%/*}/system-proxy/redsocks.conf; fi"
+Type=simple
+RemainAfterExit=yes
+StandardError=journal+console
+Restart=on-failure
+RestartSec=10s
+
+[Install]
+WantedBy=multi-user.target

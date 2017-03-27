@@ -1,0 +1,39 @@
+#!/bin/sh
+#
+# copy over redsocks configuration file, set proper
+# permissions and start redsocks
+#
+
+set -e
+
+. /usr/sbin/resin-vars
+
+if [ ! -f $CONFIG_PATH ]; then
+	echo "resin-proxy-config: $CONFIG_PATH does not exist."
+	exit 1
+else
+	echo "resin-proxy-config: Found config.json in $CONFIG_PATH ."
+fi
+
+REDSOCKSCONF=${CONFIG_PATH%/*}/system-proxy/redsocks.conf
+
+if [ ! -f $REDSOCKSCONF ]; then
+	echo "resin-proxy-config: No proxy configuration found, skipping."
+	exit 0
+fi
+
+# Set up iptables chain for redsocks
+iptables -t nat -F REDSOCKS || true
+iptables -t nat -X REDSOCKS || true
+iptables -t nat -N REDSOCKS
+
+iptables -t nat -A REDSOCKS -d 0.0.0.0/8 -j RETURN
+iptables -t nat -A REDSOCKS -d 10.0.0.0/8 -j RETURN
+iptables -t nat -A REDSOCKS -d 127.0.0.0/8 -j RETURN
+iptables -t nat -A REDSOCKS -d 169.254.0.0/16 -j RETURN
+iptables -t nat -A REDSOCKS -d 172.16.0.0/12 -j RETURN
+iptables -t nat -A REDSOCKS -d 192.168.0.0/16 -j RETURN
+iptables -t nat -A REDSOCKS -d 224.0.0.0/4 -j RETURN
+iptables -t nat -A REDSOCKS -d 240.0.0.0/4 -j RETURN
+iptables -t nat -A REDSOCKS -p tcp -j REDIRECT --to-ports 12345
+iptables -t nat -A OUTPUT -p tcp -j REDSOCKS

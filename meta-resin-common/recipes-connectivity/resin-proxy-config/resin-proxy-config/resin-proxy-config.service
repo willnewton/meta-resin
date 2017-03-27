@@ -1,0 +1,15 @@
+[Unit]
+Description=Resin proxy configuration service
+Requires=mnt-boot.mount
+After=mnt-boot.mount
+
+[Service]
+ExecStart=@BASE_BINDIR@/sh @BINDIR@/resin-proxy-config
+Type=simple
+RemainAfterExit=yes
+StandardError=journal+console
+Restart=on-failure
+RestartSec=10s
+
+[Install]
+WantedBy=multi-user.target
