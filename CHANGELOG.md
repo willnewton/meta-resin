@@ -1,6 +1,7 @@
 Change log
 -----------
 
+* Strip Plymouth of unnecessary files and dependencies [Michal]
 * Copy resinOS_uEnv.txt from external to internal media [Theodor]
 * Fix resin-state-conf copying mechanism [Theodor]
 * Don't fingerprint config.json [Andrei]
