@@ -27,9 +27,7 @@ do_deploy() {
 # by setting a logo we avoid installing the default one
 LOGO = "/mnt/boot/splash/resin-logo.png"
 
-PACKAGES_remove = "${PN}-initrd"
-FILES_${PN}-initrd = ""
-RDEPENDS_${PN}-initrd = ""
+PACKAGECONFIG = ""
 RDEPENDS_${PN} = "bash"
 
 addtask deploy before do_package after do_install
