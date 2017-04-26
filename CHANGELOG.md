@@ -1,6 +1,7 @@
 Change log
 -----------
 
+* Watch for config.json changes and update the VPN config as necessary [Page]
 * Enable the resin-uboot implementation to also boot flasher images from USB media [Florin]
 * Use supervisor tag as supervisor recipe PV [Andrei}
 
