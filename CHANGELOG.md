@@ -1,6 +1,7 @@
 Change log
 -----------
 
+* Update Docker to 17.03.1 [Theodor]
 * Enable the resin-uboot implementation to also boot flasher images from USB media [Florin]
 * Use supervisor tag as supervisor recipe PV [Andrei}
 
