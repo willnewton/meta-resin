@@ -22,11 +22,16 @@ if [ ! -f $REDSOCKSCONF ]; then
 	exit 0
 fi
 
+# Redsocks needs a redsocks user to work properly with our setup
+id -u redsocks &>/dev/null || (echo "ERROR: redsocks user doesn't exist" && exit 1)
+
 # Set up iptables chain for redsocks
 iptables -t nat -F REDSOCKS || true
 iptables -t nat -X REDSOCKS || true
 iptables -t nat -N REDSOCKS
 
+# Traffic coming from redsocks should not go back to redsocks...
+iptables -t nat -A REDSOCKS -m owner --uid-owner redsocks -j RETURN
 iptables -t nat -A REDSOCKS -d 0.0.0.0/8 -j RETURN
 iptables -t nat -A REDSOCKS -d 10.0.0.0/8 -j RETURN
 iptables -t nat -A REDSOCKS -d 127.0.0.0/8 -j RETURN

@@ -10,12 +10,15 @@ SRC_URI = " \
     "
 S = "${WORKDIR}"
 
-inherit allarch systemd
+inherit allarch systemd useradd
 
 PACKAGES = "${PN} ${PN}-flasher"
 
 SYSTEMD_SERVICE_${PN} = "resin-proxy-config.service redsocks.service"
 RDEPENDS_${PN} = "redsocks iptables"
+
+USERADD_PACKAGES = "${PN}"
+USERADD_PARAM_${PN} += "--system redsocks"
 
 do_install() {
     install -d ${D}${bindir}

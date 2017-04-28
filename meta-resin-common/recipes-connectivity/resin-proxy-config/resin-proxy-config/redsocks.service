@@ -4,6 +4,7 @@ Requires=mnt-boot.mount resin-proxy-config.service
 After=mnt-boot.mount resin-proxy-config.service
 
 [Service]
+User=redsocks
 ExecStart=@BASE_BINDIR@/sh -c "source /usr/sbin/resin-vars && \
 	if [ -f $${CONFIG_PATH%/*}/system-proxy/redsocks.conf ]; then @BINDIR@/redsocks -c $${CONFIG_PATH%/*}/system-proxy/redsocks.conf; fi"
 Type=simple
