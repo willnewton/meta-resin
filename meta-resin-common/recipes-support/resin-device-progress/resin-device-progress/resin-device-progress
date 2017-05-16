@@ -67,9 +67,9 @@ if [ `jq ".deviceId | length" $CONFIG_PATH` -eq 0 ]; then
 fi
 
 # If the user api key exists we use it instead of the deviceApiKey as it means we haven't done the key exchange yet
-read device_api_key device_id <<<$(jq -r '.apiKey // .deviceApiKey,.deviceId' $CONFIG_PATH)
+_device_api_key=${PROVISIONING_API_KEY:-DEVICE_API_KEY}
 
-curl -s -X PATCH "$API_ENDPOINT/v1/device($device_id)?apikey=$device_api_key" \
+curl -s -X PATCH "$API_ENDPOINT/v1/device($DEVICE_ID)?apikey=$_device_api_key" \
      -o "/var/log/provisioning-progress-curl-$PERCENTAGE.log" \
      --data-urlencode "provisioning_progress=$PERCENTAGE" \
      --data-urlencode "provisioning_state=$STATE" \
